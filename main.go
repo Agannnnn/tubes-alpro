@@ -68,16 +68,9 @@ func main() {
 		case 4:
 			hapusLangganan(&daftarLangganan, &n)
 		case 5:
-			var i int
+			cetakSatuLangganan(&daftarLangganan, n)
+		case 6:
 
-			urutLanggananNama(&daftarLangganan, n)
-
-			i = cariLangganan(daftarLangganan, n)
-
-			fmt.Println("Nama layanan:", daftarLangganan[i].Nama)
-			fmt.Println("Biaya layanan:", daftarLangganan[i].Biaya)
-			fmt.Println("Metode Pembayaran layanan:", daftarLangganan[i].Metode)
-			fmt.Println("Tenggat layanan tiap bulan:", daftarLangganan[i].Tenggat)
 		case 0:
 			lanjut = false
 		}
@@ -101,6 +94,19 @@ func cetakLangganan(d TabLangganan, n int) {
 	for i = 0; i < n; i++ {
 		fmt.Printf("%d. %s %d %s %d\n", i+1, d[i].Nama, d[i].Biaya, d[i].Metode, d[i].Tenggat)
 	}
+}
+
+func cetakSatuLangganan(d *TabLangganan, n int) {
+	var i int
+
+	urutLanggananNama(d, n)
+
+	i = cariLangganan(*d, n)
+
+	fmt.Println("Nama layanan:", d[i].Nama)
+	fmt.Println("Biaya layanan:", d[i].Biaya)
+	fmt.Println("Metode Pembayaran layanan:", d[i].Metode)
+	fmt.Println("Tenggat layanan tiap bulan:", d[i].Tenggat)
 }
 
 func tambahLangganan(d *TabLangganan, n *int) {
