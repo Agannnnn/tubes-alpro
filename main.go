@@ -13,10 +13,11 @@ type Langganan struct {
 }
 
 type Transaksi struct {
-	Nama    string
-	Biaya   int
-	Metode  string
-	Tanggal time.Time
+	Nama     string
+	Biaya    int
+	Metode   string
+	Tanggal  time.Time
+	Kategori string // Pemasukan, Langganan, dll. (Sesuai user)
 }
 
 const LMAX int = 10
@@ -66,22 +67,22 @@ func main() {
 	n = 5
 
 	for lanjut {
-		cariTenggatTerdekat(daftarLangganan, n)
+		tenggatTerdekatLangganan(daftarLangganan, n)
 		menu()
 		fmt.Print(">> ")
 		fmt.Scan(&input)
 
 		switch input {
 		case 1:
-			cetakLangganan(daftarLangganan, n)
+			listLangganan(daftarLangganan, n)
 		case 2:
-			tambahLangganan(&daftarLangganan, &n)
+			simpanLangganan(&daftarLangganan, &n)
 		case 3:
 			ubahLangganan(&daftarLangganan, n)
 		case 4:
 			hapusLangganan(&daftarLangganan, &n)
 		case 5:
-			cetakSatuLangganan(&daftarLangganan, n)
+			cetakLangganan(&daftarLangganan, n)
 		case 6:
 			urutLangganan(&daftarLangganan, n)
 		case 7:
@@ -118,7 +119,7 @@ func menu() {
 	fmt.Println("[0] Keluar")
 }
 
-func cetakLangganan(d TabLangganan, n int) {
+func listLangganan(d TabLangganan, n int) {
 	/*
 		Initial state:
 		i: tidak terdefinisi.
@@ -135,7 +136,7 @@ func cetakLangganan(d TabLangganan, n int) {
 	}
 }
 
-func cetakSatuLangganan(d *TabLangganan, n int) {
+func cetakLangganan(d *TabLangganan, n int) {
 	/*
 		Initial state:
 		i: tidak terdefinisi.
@@ -156,7 +157,7 @@ func cetakSatuLangganan(d *TabLangganan, n int) {
 	fmt.Println("Tenggat layanan tiap bulan:", d[i].Tenggat)
 }
 
-func tambahLangganan(d *TabLangganan, n *int) {
+func simpanLangganan(d *TabLangganan, n *int) {
 	/*
 		Initial state:
 		nm, m: tidak terdefinisi.
@@ -206,7 +207,7 @@ func ubahLangganan(d *TabLangganan, n int) {
 
 	var i int
 
-	cetakLangganan(*d, n)
+	listLangganan(*d, n)
 
 	fmt.Print("Masukkan index layanan >> ")
 	fmt.Scan(&i)
@@ -216,7 +217,7 @@ func ubahLangganan(d *TabLangganan, n int) {
 		fmt.Printf("Index harus antara 1 - %d\n", n)
 	}
 
-	tambahLangganan(d, &i)
+	simpanLangganan(d, &i)
 }
 
 func hapusLangganan(d *TabLangganan, n *int) {
@@ -233,7 +234,7 @@ func hapusLangganan(d *TabLangganan, n *int) {
 
 	var i int
 
-	cetakLangganan(*d, *n)
+	listLangganan(*d, *n)
 
 	urutLanggananNama(d, *n)
 
@@ -325,10 +326,10 @@ func urutLangganan(d *TabLangganan, n int) {
 
 	switch y {
 	case "asc":
-		cetakLangganan(*d, n)
+		listLangganan(*d, n)
 	case "dsc":
-		urutLanggananBalik(d, n)
-		cetakLangganan(*d, n)
+		urutLanggananDesc(d, n)
+		listLangganan(*d, n)
 	default:
 		fmt.Println("Pilih opsi yang tersedia")
 		return
@@ -422,7 +423,7 @@ func urutLanggananTenggat(d *TabLangganan, n int) {
 	}
 }
 
-func urutLanggananBalik(d *TabLangganan, n int) {
+func urutLanggananDesc(d *TabLangganan, n int) {
 	/*
 		Initial state:
 		i: bernilai 0.
@@ -446,7 +447,7 @@ func urutLanggananBalik(d *TabLangganan, n int) {
 	}
 }
 
-func cariTenggatTerdekat(d TabLangganan, n int) {
+func tenggatTerdekatLangganan(d TabLangganan, n int) {
 	/*
 		Initial state:
 		i: tidak terdefinisi.
