@@ -70,7 +70,7 @@ func main() {
 		case 5:
 			cetakSatuLangganan(&daftarLangganan, n)
 		case 6:
-
+			urutLangganan(&daftarLangganan, n)
 		case 0:
 			lanjut = false
 		}
@@ -197,6 +197,38 @@ func cariLangganan(d TabLangganan, n int) int {
 	return i
 }
 
+func urutLangganan(d *TabLangganan, n int) {
+	var x, y string
+
+	fmt.Print("Urut berdasarkan [nama/harga/tenggat] >> ")
+	fmt.Scan(&x)
+	fmt.Print("Pilih jenis urutan [asc/dsc] >> ")
+	fmt.Scan(&y)
+
+	switch x {
+	case "nama":
+		urutLanggananNama(d, n)
+	case "harga":
+		urutLanggananHarga(d, n)
+	case "tenggat":
+		urutLanggananTenggat(d, n)
+	default:
+		fmt.Println("Pilih opsi yang tersedia")
+		return
+	}
+
+	switch y {
+	case "asc":
+		cetakLangganan(*d, n)
+	case "dsc":
+		urutLanggananBalik(d, n)
+		cetakLangganan(*d, n)
+	default:
+		fmt.Println("Pilih opsi yang tersedia")
+		return
+	}
+}
+
 func urutLanggananNama(d *TabLangganan, n int) {
 	var i, j, min int
 	var temp Langganan
@@ -240,7 +272,7 @@ func urutLanggananTenggat(d *TabLangganan, n int) {
 	for i = 0; i < n-1; i++ {
 		min = i
 		for j = i + 1; j < n; j++ {
-			if d[j].Biaya < d[min].Biaya {
+			if d[j].Tenggat < d[min].Tenggat {
 				min = j
 			}
 		}
@@ -248,5 +280,19 @@ func urutLanggananTenggat(d *TabLangganan, n int) {
 		temp = d[min]
 		d[min] = d[i]
 		d[i] = temp
+	}
+}
+
+func urutLanggananBalik(d *TabLangganan, n int) {
+	var i int
+	var temp Langganan
+
+	i = 0
+	for i < n/2 && d[i] != d[n-1-i] {
+		temp = d[i]
+		d[i] = d[n-1-i]
+		d[n-1-i] = temp
+
+		i++
 	}
 }
