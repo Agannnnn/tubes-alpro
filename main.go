@@ -54,6 +54,7 @@ func main() {
 	n = 5
 
 	for lanjut {
+		cariTenggatTerdekat(daftarLangganan, n)
 		menu()
 		fmt.Print(">> ")
 		fmt.Scan(&input)
@@ -74,10 +75,17 @@ func main() {
 		case 0:
 			lanjut = false
 		}
+		fmt.Println("---")
 	}
 }
 
 func menu() {
+	fmt.Println("  ___ ___ __  __ ___ _    ___   ___ _   _ ___ ___  ___ ___ ___ ___ _____ ___ ___  _  _   __  __   _   _  _   _   ___ ___ ___ ")
+	fmt.Println(" / __|_ _|  \\/  | _ \\ |  | __| / __| | | | _ ) __|/ __| _ \\_ _| _ \\_   _|_ _/ _ \\| \\| | |  \\/  | /_\\ | \\| | /_\\ / __| __| _ \\")
+	fmt.Println(" \\__ \\| || |\\/| |  _/ |__| _|  \\__ \\ |_| | _ \\__ \\ (__|   /| ||  _/ | |  | | (_) | .` | | |\\/| |/ _ \\| .` |/ _ \\ (_ | _||   /")
+	fmt.Println(" |___/___|_|  |_|_| |____|___| |___/\\___/|___/___/\\___|_|_\\___|_|   |_| |___\\___/|_|\\_| |_|  |_/_/ \\_\\_|\\_/_/ \\_\\___|___|_|_\\")
+	fmt.Println("                                                                                                                             ")
+
 	fmt.Println("[1] Cetak layanan berlangganan")
 	fmt.Println("[2] Tambah layanan berlangganan")
 	fmt.Println("[3] Ubah layanan berlangganan")
@@ -295,4 +303,17 @@ func urutLanggananBalik(d *TabLangganan, n int) {
 
 		i++
 	}
+}
+
+func cariTenggatTerdekat(d TabLangganan, n int) {
+	var i, min int
+
+	min = 0
+	for i = 1; i < n; i++ {
+		if d[i].Tenggat < d[min].Tenggat {
+			min = i
+		}
+	}
+
+	fmt.Println("Layanan", d[min].Nama, "akan diperbarui pada tanggal", d[min].Tenggat)
 }
