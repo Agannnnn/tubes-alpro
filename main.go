@@ -9,7 +9,7 @@ type Langganan struct {
 	Tenggat int
 }
 
-const LMAX int = 100
+const LMAX int = 10
 
 type TabLangganan = [LMAX]Langganan
 
@@ -68,6 +68,16 @@ func main() {
 		case 4:
 			hapusLangganan(&daftarLangganan, &n)
 		case 5:
+			var i int
+
+			urutLanggananNama(&daftarLangganan, n)
+
+			i = cariLangganan(daftarLangganan, n)
+
+			fmt.Println("Nama layanan:", daftarLangganan[i].Nama)
+			fmt.Println("Biaya layanan:", daftarLangganan[i].Biaya)
+			fmt.Println("Metode Pembayaran layanan:", daftarLangganan[i].Metode)
+			fmt.Println("Tenggat layanan tiap bulan:", daftarLangganan[i].Tenggat)
 		case 0:
 			lanjut = false
 		}
@@ -79,6 +89,8 @@ func menu() {
 	fmt.Println("[2] Tambah layanan berlangganan")
 	fmt.Println("[3] Ubah layanan berlangganan")
 	fmt.Println("[4] Hapus layanan berlangganan")
+	fmt.Println("[5] Cari layanan berlangganan")
+	fmt.Println("[6] Urutkan layanan berlangganan")
 	fmt.Println("[0] Keluar")
 }
 
@@ -136,12 +148,13 @@ func hapusLangganan(d *TabLangganan, n *int) {
 
 	cetakLangganan(*d, *n)
 
-	fmt.Print("Masukkan index layanan >> ")
-	fmt.Scan(&i)
-	i--
+	urutLanggananNama(d, *n)
+
+	i = cariLangganan(*d, *n)
 
 	if i < 0 || i > *n {
-		fmt.Printf("Index harus antara 1 - %d\n", n)
+		fmt.Println("Data tidak dapat ditemukan")
+		return
 	}
 
 	for i < *n-1 {
@@ -149,17 +162,85 @@ func hapusLangganan(d *TabLangganan, n *int) {
 		i++
 	}
 	*n--
+
+	fmt.Println("Data telah dihapus")
 }
 
-func cariLangganan(d TabLangganan, n int) {
+func cariLangganan(d TabLangganan, n int) int {
 	var x string
-	var i int
+	var bawah, tengah, atas, i int
 
 	fmt.Print("Masukkan nama layanan >> ")
 	fmt.Scan(&x)
 
-	i = 0
-	for i < n {
+	i = -1
+	bawah = 0
+	atas = n - 1
+	for bawah <= atas && i == -1 {
+		tengah = (bawah + atas) / 2
 
+		if x == d[tengah].Nama {
+			i = tengah
+		} else if x > d[tengah].Nama {
+			bawah = tengah + 1
+		} else if x < d[tengah].Nama {
+			atas = tengah - 1
+		}
+	}
+
+	return i
+}
+
+func urutLanggananNama(d *TabLangganan, n int) {
+	var i, j, min int
+	var temp Langganan
+
+	for i = 0; i < n-1; i++ {
+		min = i
+		for j = i + 1; j < n; j++ {
+			if d[j].Nama < d[min].Nama {
+				min = j
+			}
+		}
+
+		temp = d[min]
+		d[min] = d[i]
+		d[i] = temp
+	}
+}
+
+func urutLanggananHarga(d *TabLangganan, n int) {
+	var i, j, min int
+	var temp Langganan
+
+	for i = 0; i < n-1; i++ {
+		min = i
+		for j = i + 1; j < n; j++ {
+			if d[j].Biaya < d[min].Biaya {
+				min = j
+			}
+		}
+
+		temp = d[min]
+		d[min] = d[i]
+		d[i] = temp
+	}
+}
+
+func urutLanggananTenggat(d *TabLangganan, n int) {
+	var i, j, min int
+	var temp Langganan
+
+	for i = 0; i < n-1; i++ {
+		min = i
+		for j = i + 1; j < n; j++ {
+			if d[j].Biaya < d[min].Biaya {
+				min = j
+			}
+		}
+
+		temp = d[min]
+		d[min] = d[i]
+		d[i] = temp
 	}
 }
