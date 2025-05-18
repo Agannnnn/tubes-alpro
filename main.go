@@ -75,6 +75,7 @@ func main() {
 		case 7:
 			cetakTotalBiayaLangganan(daftarLangganan, n)
 		case 8:
+			cetakPengeluaranTerbesar(daftarLangganan, n)
 		case 0:
 			lanjut = false
 		}
@@ -333,4 +334,17 @@ func cetakTotalBiayaLangganan(d TabLangganan, n int) {
 	}
 
 	fmt.Println("Total pengeluaran (langganan):", total)
+}
+
+func cetakPengeluaranTerbesar(d TabLangganan, n int) {
+	var i, max int
+
+	max = 0
+	for i = 0; i < n; i++ {
+		if d[i].Biaya > d[max].Biaya {
+			max = i
+		}
+	}
+
+	fmt.Println("Pengeluaran terbesar jatuh kepada", d[max].Nama, "dengan biaya", d[max].Biaya)
 }
