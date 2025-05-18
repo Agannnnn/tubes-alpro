@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Langganan struct {
 	Nama    string
@@ -9,9 +12,18 @@ type Langganan struct {
 	Tenggat int
 }
 
+type Transaksi struct {
+	Nama    string
+	Biaya   int
+	Metode  string
+	Tanggal time.Time
+}
+
 const LMAX int = 10
+const TMAX int = 100
 
 type TabLangganan = [LMAX]Langganan
+type TabTransaksi = [TMAX]Transaksi
 
 func main() {
 	var input int
@@ -31,7 +43,7 @@ func main() {
 		Nama:    "Netflix",
 		Biaya:   90000,
 		Metode:  "Mandiri",
-		Tenggat: 8,
+		Tenggat: 23,
 	}
 	daftarLangganan[1] = Langganan{
 		Nama:    "Spotify",
@@ -84,6 +96,11 @@ func main() {
 }
 
 func menu() {
+	/*
+		Initial state:
+		Final state: Mengeluarkan barisan string berisikan nama apalikasi dan menu - menu
+		yang dapat dipilih pengguna.
+	*/
 	fmt.Println("  ___ ___ __  __ ___ _    ___   ___ _   _ ___ ___  ___ ___ ___ ___ _____ ___ ___  _  _   __  __   _   _  _   _   ___ ___ ___ ")
 	fmt.Println(" / __|_ _|  \\/  | _ \\ |  | __| / __| | | | _ ) __|/ __| _ \\_ _| _ \\_   _|_ _/ _ \\| \\| | |  \\/  | /_\\ | \\| | /_\\ / __| __| _ \\")
 	fmt.Println(" \\__ \\| || |\\/| |  _/ |__| _|  \\__ \\ |_| | _ \\__ \\ (__|   /| ||  _/ | |  | | (_) | .` | | |\\/| |/ _ \\| .` |/ _ \\ (_ | _||   /")
@@ -102,6 +119,14 @@ func menu() {
 }
 
 func cetakLangganan(d TabLangganan, n int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		Final state:
+		i: nilai diperbarui untuk perulangan.
+		Mengeluarkan output berupa isi dari array TabLangganan d.
+	*/
+
 	fmt.Println("Daftar layanan berlangganan:")
 
 	var i int
@@ -111,6 +136,14 @@ func cetakLangganan(d TabLangganan, n int) {
 }
 
 func cetakSatuLangganan(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		Final state:
+		i: berisikan indeks dari layanan yang dicari berdasarkan namanya.
+		Mengeluarkan barisan string yang berisikan nilai dari layanan yang dipilih.
+	*/
+
 	var i int
 
 	urutLanggananNama(d, n)
@@ -124,6 +157,19 @@ func cetakSatuLangganan(d *TabLangganan, n int) {
 }
 
 func tambahLangganan(d *TabLangganan, n *int) {
+	/*
+		Initial state:
+		nm, m: tidak terdefinisi.
+		b, t: tidak terdefinisi.
+		Final state:
+		nm: berisikan nama layanan baru.
+		m: berisikan metode pembayaran layanan baru.
+		b: berisikan biaya layanan baru.
+		t: berisikan tanggal tenggat layanan baru.
+		Akan merubah isi dari array TabLangganan d dengna menambahkan item baru, lalu
+		menambahkan nilai n sebanyak 1.
+	*/
+
 	fmt.Println("Masukkan data layanan berlangganan")
 
 	var nm, m string
@@ -148,6 +194,16 @@ func tambahLangganan(d *TabLangganan, n *int) {
 }
 
 func ubahLangganan(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		FInal state:
+		Mencetak daftar layanan berlangganan yang sdah disimpan.
+		i: bernilai index dari layanan yang ingin dirubah.
+		Akan memanggil prosedur tambahLangganan sebagai prosedur untuk merubah nilai dari
+		layanan yang telah dipilih.
+	*/
+
 	var i int
 
 	cetakLangganan(*d, n)
@@ -164,6 +220,17 @@ func ubahLangganan(d *TabLangganan, n int) {
 }
 
 func hapusLangganan(d *TabLangganan, n *int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		Final state:
+		Mencetak daftar layanan berlangganan yang sudah terdaftar.
+		Mengurtkan daftar layanan berdasarkan nama secara menaik (ascending).
+		i: berisikan index dari layanan yang akan dihapus. Dicari berdasarkan nama dari layanan tersebut.
+		Akan menggeser posisi dari nilai - nilai yang terdapat dalam array dimulai dari indeks layanan yang
+		dihaps.
+	*/
+
 	var i int
 
 	cetakLangganan(*d, *n)
@@ -187,6 +254,21 @@ func hapusLangganan(d *TabLangganan, n *int) {
 }
 
 func cariLangganan(d TabLangganan, n int) int {
+	/*
+		Initial state:
+		x: tidak terdefinisi.
+		bawah: berniilai 0.
+		atas: bernilai n - 1.
+		tengah: tidak terdefinisi
+		i: bernilai -1.
+		Final state:
+		x: berisikan nama dari layanan yang dicari.
+		tengah: berisikan hasil dari (bawah + atas) / 2 yang akan berubah - ubah setiap iterasi.
+		Akan mengembalikan indeks dari layanan yang dicari apabila ada dalam array. Jika tidak
+		ada, maka fungsi akan mengembalikan nilai -1 sebagai penanda bahwa layanan
+		tidak dapat ditemukan.
+	*/
+
 	var x string
 	var bawah, tengah, atas, i int
 
@@ -212,6 +294,16 @@ func cariLangganan(d TabLangganan, n int) int {
 }
 
 func urutLangganan(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		x, y: tidak terdefinisi.
+		Final state:
+		x: berisikan atribut yang akan digunakan untuk mengurutkan array.
+		y: berisikan metode pengurutan, menaik (ascending) atau menurun (descending).
+		Akan merubah urutan array berdasarkan nilai x dan y dengan memanggil prosedur yang
+		sesuai dengan parameter yang diberikan.
+	*/
+
 	var x, y string
 
 	fmt.Print("Urut berdasarkan [nama/harga/tenggat] >> ")
@@ -244,6 +336,17 @@ func urutLangganan(d *TabLangganan, n int) {
 }
 
 func urutLanggananNama(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i, j, min: tidak terdefinisi.
+		temp: tidak terdefinisi.
+		Final state:
+		i, j: digunakan sebagai counter perulangan.
+		min: menyimpan indeks dari layanan dengan nama terkecil.
+		temp: menyimpan nilai dari array ke min yang akan ditukar nilainya
+		dengan array ke i.
+	*/
+
 	var i, j, min int
 	var temp Langganan
 
@@ -262,6 +365,17 @@ func urutLanggananNama(d *TabLangganan, n int) {
 }
 
 func urutLanggananHarga(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i, j, min: tidak terdefinisi.
+		temp: tidak terdefinisi.
+		Final state:
+		i, j: digunakan sebagai counter perulangan.
+		min: menyimpan indeks dari layanan dengan biaya terkecil.
+		temp: menyimpan nilai dari array ke min yang akan ditukar nilainya
+		dengan array ke i.
+	*/
+
 	var i, j, min int
 	var temp Langganan
 
@@ -280,6 +394,17 @@ func urutLanggananHarga(d *TabLangganan, n int) {
 }
 
 func urutLanggananTenggat(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i, j, min: tidak terdefinisi.
+		temp: tidak terdefinisi.
+		Final state:
+		i, j: digunakan sebagai counter perulangan.
+		min: menyimpan indeks dari layanan dengan tenggat terdekat.
+		temp: menyimpan nilai dari array ke min yang akan ditukar nilainya
+		dengan array ke i.
+	*/
+
 	var i, j, min int
 	var temp Langganan
 
@@ -298,6 +423,16 @@ func urutLanggananTenggat(d *TabLangganan, n int) {
 }
 
 func urutLanggananBalik(d *TabLangganan, n int) {
+	/*
+		Initial state:
+		i: bernilai 0.
+		temp: tidak terdefinisi.
+		Final state:
+		i: digunakan sebagai counter perulangan.
+		temp: digunakan untuk menyimpan nilai sementara dari array ke i yang akan ditukarkan nilainya.
+		Akan melakukan perulangan dari 0 hingga n/2 untuk membalikkan urutan array.
+	*/
+
 	var i int
 	var temp Langganan
 
@@ -312,12 +447,34 @@ func urutLanggananBalik(d *TabLangganan, n int) {
 }
 
 func cariTenggatTerdekat(d TabLangganan, n int) {
-	var i, min int
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		min: bernilai 0.
+		hariIni: bernilai tanggal prosedur ini dijalankan.
+		Final state:
+		i: digunakan sebagai counter perulangan.
+		min: menyimpan indeks dari layanan dengan tenggat terdekat.
+		Akan mengeluarkan layanan dengan tenggat terdekat dari sekarang.
+	*/
+
+	var i, min, hariIni int
+
+	hariIni = time.Now().Day()
 
 	min = 0
 	for i = 1; i < n; i++ {
-		if d[i].Tenggat < d[min].Tenggat {
+		// Logika sekali pakai, jangan diganti 🙏😭
+		if d[min].Tenggat <= hariIni && d[i].Tenggat <= hariIni {
+			if d[i].Tenggat < d[min].Tenggat {
+				min = i
+			}
+		} else if d[min].Tenggat < hariIni && d[i].Tenggat >= hariIni {
 			min = i
+		} else if d[min].Tenggat >= hariIni && d[i].Tenggat >= hariIni {
+			if d[i].Tenggat < d[min].Tenggat {
+				min = i
+			}
 		}
 	}
 
@@ -325,6 +482,16 @@ func cariTenggatTerdekat(d TabLangganan, n int) {
 }
 
 func cetakTotalBiayaLangganan(d TabLangganan, n int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		total: bernilai 0.
+		Final state:
+		i: digunakan sebagai counter perulangan.
+		total: menyimpan akumulasi biaya layanan yang dimiliki.
+		Akan mengeluarkan nilai total sebagai total pengeluaran layanan berlangganan bulanan.
+	*/
+
 	var i, total int
 
 	total = 0
@@ -337,6 +504,17 @@ func cetakTotalBiayaLangganan(d TabLangganan, n int) {
 }
 
 func cetakPengeluaranTerbesar(d TabLangganan, n int) {
+	/*
+		Initial state:
+		i: tidak terdefinisi.
+		max: bernilai 0.
+		Final state:
+		i: digunakan sebagai counter perulangan.
+		max: berisikan indeks dari layanan yang memiliki biaya terbesar.
+		Akan menampilkan nama dan biaya dari layanan dengan biaya terbesar sebagai rekomendasi
+		pembatalan langganan untuk memotong pengeluaran pengguna.
+	*/
+
 	var i, max int
 
 	max = 0
