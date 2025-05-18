@@ -72,6 +72,9 @@ func main() {
 			cetakSatuLangganan(&daftarLangganan, n)
 		case 6:
 			urutLangganan(&daftarLangganan, n)
+		case 7:
+			cetakTotalBiayaLangganan(daftarLangganan, n)
+		case 8:
 		case 0:
 			lanjut = false
 		}
@@ -92,6 +95,8 @@ func menu() {
 	fmt.Println("[4] Hapus layanan berlangganan")
 	fmt.Println("[5] Cari layanan berlangganan")
 	fmt.Println("[6] Urutkan layanan berlangganan")
+	fmt.Println("[7] Total pengeluaran layanan berlangganan")
+	fmt.Println("[8] Rekomendasi")
 	fmt.Println("[0] Keluar")
 }
 
@@ -316,4 +321,16 @@ func cariTenggatTerdekat(d TabLangganan, n int) {
 	}
 
 	fmt.Println("Layanan", d[min].Nama, "akan diperbarui pada tanggal", d[min].Tenggat)
+}
+
+func cetakTotalBiayaLangganan(d TabLangganan, n int) {
+	var i, total int
+
+	total = 0
+
+	for i = 0; i < n; i++ {
+		total = d[i].Biaya
+	}
+
+	fmt.Println("Total pengeluaran (langganan):", total)
 }
