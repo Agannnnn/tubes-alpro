@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 type Langganan struct {
@@ -16,7 +15,7 @@ type Transaksi struct {
 	Nama     string
 	Biaya    int
 	Metode   string
-	Tanggal  time.Time
+	Tanggal  int
 	Kategori string // Pemasukan, Langganan, dll. (Sesuai user)
 }
 
@@ -500,7 +499,8 @@ func tenggatTerdekatLangganan(d TabLangganan, n int) {
 
 	var i, min, hariIni int
 
-	hariIni = time.Now().Day()
+	fmt.Print("Masukkan tanggal hari ini >> ")
+	fmt.Scan(&hariIni)
 
 	min = 0
 	for i = 1; i < n; i++ {
@@ -641,7 +641,7 @@ func listTransaksi(d TabTransaksi, n int) {
 
 	var i int
 	for i = 0; i < n; i++ {
-		fmt.Printf("%d. %s %s %d %s %s\n", i+1, d[i].Tanggal.Format(time.DateOnly), d[i].Nama, d[i].Biaya, d[i].Metode, d[i].Kategori)
+		fmt.Printf("%d. %d %s %d %s %s\n", i+1, d[i].Tanggal, d[i].Nama, d[i].Biaya, d[i].Metode, d[i].Kategori)
 	}
 }
 
@@ -684,7 +684,7 @@ func simpanTransaksi(d *TabTransaksi, n *int) {
 	fmt.Println("Masukkan data transaksi")
 
 	var nm, m, k string
-	var b int
+	var b, t int
 
 	fmt.Print("Nama >> ")
 	fmt.Scan(&nm)
@@ -694,12 +694,14 @@ func simpanTransaksi(d *TabTransaksi, n *int) {
 	fmt.Scan(&m)
 	fmt.Print("Kategori >> ")
 	fmt.Scan(&k)
+	fmt.Print("Tanggal [1-365] >> ")
+	fmt.Scan(&t)
 
 	d[*n].Nama = nm
 	d[*n].Biaya = b
 	d[*n].Metode = m
 	d[*n].Kategori = k
-	d[*n].Tanggal = time.Now()
+	d[*n].Tanggal = t
 	*n++
 
 	fmt.Println("Data transaksi telah disimpan")
@@ -716,7 +718,7 @@ func ubahTransaksi(d *TabTransaksi, n int) {
 		transaksi yang telah dipilih.
 	*/
 
-	var i int
+	var i, opsi int
 
 	listTransaksi(*d, n)
 
@@ -728,7 +730,35 @@ func ubahTransaksi(d *TabTransaksi, n int) {
 		fmt.Printf("Index harus antara 1 - %d\n", n)
 	}
 
-	simpanTransaksi(d, &i)
+	fmt.Println("[0] Ubah semua")
+	fmt.Println("[1] Ubah nama")
+	fmt.Println("[2] Ubah biaya")
+	fmt.Println("[3] Ubah metode")
+	fmt.Println("[4] Ubah kategori")
+	fmt.Println("[5] Ubah tanggal")
+
+	fmt.Print(">> ")
+	fmt.Scan(&opsi)
+
+	switch opsi {
+	case 0:
+		simpanTransaksi(d, &i)
+	case 1:
+		fmt.Print("Nama >> ")
+		fmt.Scan(&d[i].Nama)
+	case 2:
+		fmt.Print("Biaya >> ")
+		fmt.Scan(&d[i].Biaya)
+	case 3:
+		fmt.Print("Metode >> ")
+		fmt.Scan(&d[i].Metode)
+	case 4:
+		fmt.Print("Kategori >> ")
+		fmt.Scan(&d[i].Kategori)
+	case 5:
+		fmt.Print("Tanggal >> ")
+		fmt.Scan(&d[i].Tanggal)
+	}
 }
 
 func hapusTransaksi(d *TabTransaksi, n *int) {
@@ -856,20 +886,17 @@ func urutTransaksiNama(d *TabTransaksi, n int) {
 		dengan array ke i.
 	*/
 
-	var i, j, min int
+	var i, j int
 	var temp Transaksi
 
-	for i = 0; i < n-1; i++ {
-		min = i
-		for j = i + 1; j < n; j++ {
-			if d[j].Nama < d[min].Nama {
-				min = j
-			}
+	for i = 1; i < n; i++ {
+		j = i
+		temp = d[j]
+		for j > 0 && temp.Nama < d[j-1].Nama {
+			d[j] = d[j-1]
+			j -= 1
 		}
-
-		temp = d[min]
-		d[min] = d[i]
-		d[i] = temp
+		d[j] = temp
 	}
 }
 
@@ -885,20 +912,17 @@ func urutTransaksiHarga(d *TabTransaksi, n int) {
 		dengan array ke i.
 	*/
 
-	var i, j, min int
+	var i, j int
 	var temp Transaksi
 
-	for i = 0; i < n-1; i++ {
-		min = i
-		for j = i + 1; j < n; j++ {
-			if d[j].Biaya < d[min].Biaya {
-				min = j
-			}
+	for i = 1; i < n; i++ {
+		j = i
+		temp = d[j]
+		for j > 0 && temp.Biaya < d[j-1].Biaya {
+			d[j] = d[j-1]
+			j -= 1
 		}
-
-		temp = d[min]
-		d[min] = d[i]
-		d[i] = temp
+		d[j] = temp
 	}
 }
 
@@ -914,20 +938,17 @@ func urutTransaksiKategori(d *TabTransaksi, n int) {
 		dengan array ke i.
 	*/
 
-	var i, j, min int
+	var i, j int
 	var temp Transaksi
 
-	for i = 0; i < n-1; i++ {
-		min = i
-		for j = i + 1; j < n; j++ {
-			if d[j].Kategori < d[min].Kategori {
-				min = j
-			}
+	for i = 1; i < n; i++ {
+		j = i
+		temp = d[j]
+		for j > 0 && temp.Kategori < d[j-1].Kategori {
+			d[j] = d[j-1]
+			j -= 1
 		}
-
-		temp = d[min]
-		d[min] = d[i]
-		d[i] = temp
+		d[j] = temp
 	}
 }
 
@@ -943,20 +964,17 @@ func urutTransaksiTanggal(d *TabTransaksi, n int) {
 		dengan array ke i.
 	*/
 
-	var i, j, min int
+	var i, j int
 	var temp Transaksi
 
-	for i = 0; i < n-1; i++ {
-		min = i
-		for j = i + 1; j < n; j++ {
-			if d[j].Tanggal.Unix() < d[min].Tanggal.Unix() {
-				min = j
-			}
+	for i = 1; i < n; i++ {
+		j = i
+		temp = d[j]
+		for j > 0 && temp.Tanggal < d[j-1].Tanggal {
+			d[j] = d[j-1]
+			j -= 1
 		}
-
-		temp = d[min]
-		d[min] = d[i]
-		d[i] = temp
+		d[j] = temp
 	}
 }
 
@@ -990,12 +1008,15 @@ func simpanBatasTransaksi(b *int) {
 }
 
 func totalTransaksi(d *TabTransaksi, n int) int {
-	var i, total int
+	var i, total, m int
+
+	fmt.Print("Masukkan bulan sekarang [1-12] >> ")
+	fmt.Scan(&m)
 
 	total = 0
 
 	for i = 0; i < n; i++ {
-		if d[i].Tanggal.Month() == time.Now().Month() {
+		if d[i].Tanggal <= (30*m) && d[i].Tanggal > (30*m-1) {
 			total += d[i].Biaya
 		}
 	}
