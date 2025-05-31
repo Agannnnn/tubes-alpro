@@ -220,7 +220,7 @@ func ubahLangganan(d *TabLangganan, n int) {
 		layanan yang telah dipilih.
 	*/
 
-	var i int
+	var i, opsi int
 
 	listLangganan(*d, n)
 
@@ -232,7 +232,31 @@ func ubahLangganan(d *TabLangganan, n int) {
 		fmt.Printf("Index harus antara 1 - %d\n", n)
 	}
 
-	simpanLangganan(d, &i)
+	fmt.Println("[0] Ubah semua")
+	fmt.Println("[1] Ubah nama")
+	fmt.Println("[2] Ubah biaya")
+	fmt.Println("[3] Ubah metode")
+	fmt.Println("[4] Ubah tenggat")
+
+	fmt.Print(">> ")
+	fmt.Scan(&opsi)
+
+	switch opsi {
+	case 0:
+		simpanLangganan(d, &i)
+	case 1:
+		fmt.Print("Nama >> ")
+		fmt.Scan(&d[i].Nama)
+	case 2:
+		fmt.Print("Biaya >> ")
+		fmt.Scan(&d[i].Biaya)
+	case 3:
+		fmt.Print("Metode >> ")
+		fmt.Scan(&d[i].Metode)
+	case 4:
+		fmt.Print("Tenggat >> ")
+		fmt.Scan(&d[i].Tenggat)
+	}
 }
 
 func hapusLangganan(d *TabLangganan, n *int) {
