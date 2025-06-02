@@ -26,7 +26,7 @@ type TabLangganan = [LMAX]Langganan
 type TabTransaksi = [TMAX]Transaksi
 
 func main() {
-	var input int
+	var input, hariIni, bulanIni int
 	var lanjut bool
 	var daftarLangganan TabLangganan
 	var daftarTransaksi TabTransaksi
@@ -35,10 +35,13 @@ func main() {
 	nDaftarLangganan = 0
 	nDaftarTransaksi = 0
 
+	fmt.Print("Masukkan tanggal hari ini (1-31): ")
+	fmt.Scan(&hariIni)
+	fmt.Print("Masukkan bulan ini (1-12): ")
+	fmt.Scan(&bulanIni)
+
 	lanjut = true
 	for lanjut {
-		tenggatTerdekatLangganan(daftarLangganan, nDaftarLangganan)
-
 		menu()
 
 		fmt.Print(">> ")
@@ -46,13 +49,18 @@ func main() {
 
 		switch input {
 		case 1:
-			menuLangganan(&daftarLangganan, &nDaftarLangganan)
+			menuLangganan(&daftarLangganan, &nDaftarLangganan, hariIni)
 		case 2:
-			menuTransaksi(&daftarTransaksi, &nDaftarTransaksi)
+			menuTransaksi(&daftarTransaksi, &nDaftarTransaksi, bulanIni)
+		case 3:
+			fmt.Print("Masukkan tanggal hari ini (1-31): ")
+			fmt.Scan(&hariIni)
+		case 4:
+			fmt.Print("Masukkan bulan ini (1-12): ")
+			fmt.Scan(&bulanIni)
 		case 0:
 			lanjut = false
 		}
-		fmt.Println("---")
 	}
 }
 
@@ -62,18 +70,18 @@ func menu() {
 		Final state: Mengeluarkan barisan string berisikan nama apalikasi dan menu - menu
 		yang dapat dipilih pengguna.
 	*/
-	fmt.Println("  ___ ___ __  __ ___ _    ___   ___ _   _ ___ ___  ___ ___ ___ ___ _____ ___ ___  _  _   __  __   _   _  _   _   ___ ___ ___ ")
-	fmt.Println(" / __|_ _|  \\/  | _ \\ |  | __| / __| | | | _ ) __|/ __| _ \\_ _| _ \\_   _|_ _/ _ \\| \\| | |  \\/  | /_\\ | \\| | /_\\ / __| __| _ \\")
-	fmt.Println(" \\__ \\| || |\\/| |  _/ |__| _|  \\__ \\ |_| | _ \\__ \\ (__|   /| ||  _/ | |  | | (_) | .` | | |\\/| |/ _ \\| .` |/ _ \\ (_ | _||   /")
-	fmt.Println(" |___/___|_|  |_|_| |____|___| |___/\\___/|___/___/\\___|_|_\\___|_|   |_| |___\\___/|_|\\_| |_|  |_/_/ \\_\\_|\\_/_/ \\_\\___|___|_|_\\")
-	fmt.Println("                                                                                                                             ")
-
-	fmt.Println("[1] Menu langganan")
-	fmt.Println("[2] Menu transaksi")
-	fmt.Println("[0] Keluar")
+	fmt.Println("+-------------------------------+")
+	fmt.Println("| Simple Subscription Manager   |")
+	fmt.Println("+-------------------------------+")
+	fmt.Println("| [1] Menu layanan berlangganan |")
+	fmt.Println("| [2] Menu transaksi            |")
+	fmt.Println("| [3] Ubah tanggal              |")
+	fmt.Println("| [4] Ubah bulan                |")
+	fmt.Println("| [0] Keluar                    |")
+	fmt.Println("+-------------------------------+")
 }
 
-func menuLangganan(d *TabLangganan, n *int) {
+func menuLangganan(d *TabLangganan, n *int, hariIni int) {
 	/*
 		Initial state:
 		input: tidak terdefinisi.
@@ -89,21 +97,20 @@ func menuLangganan(d *TabLangganan, n *int) {
 	lanjut = true
 
 	for lanjut {
-		fmt.Println("  _                                 _             _                                         ")
-		fmt.Println(" | |__ _ _  _ __ _ _ _  __ _ _ _   | |__  ___ _ _| |__ _ _ _  __ _ __ _ __ _ _ _  __ _ _ _  ")
-		fmt.Println(" | / _` | || / _` | ' \\/ _` | ' \\  | '_ \\/ -_) '_| / _` | ' \\/ _` / _` / _` | ' \\/ _` | ' \\ ")
-		fmt.Println(" |_\\__,_|\\_, \\__,_|_||_\\__,_|_||_| |_.__/\\___|_| |_\\__,_|_||_\\__, \\__, \\__,_|_||_\\__,_|_||_|")
-		fmt.Println("         |__/                                                |___/|___/                     ")
-
-		fmt.Println("[1] Cetak layanan berlangganan")
-		fmt.Println("[2] Tambah layanan berlangganan")
-		fmt.Println("[3] Ubah layanan berlangganan")
-		fmt.Println("[4] Hapus layanan berlangganan")
-		fmt.Println("[5] Cari layanan berlangganan")
-		fmt.Println("[6] Urutkan layanan berlangganan")
-		fmt.Println("[7] Total pengeluaran layanan berlangganan")
-		fmt.Println("[8] Rekomendasi")
-		fmt.Println("[0] Keluar")
+		fmt.Println("+-----------------------------------------------------+")
+		fmt.Println("| Layanan Berlangganan                                |")
+		fmt.Println("+-----------------------------------------------------+")
+		fmt.Println("| [1] Cetak layanan berlangganan                      |")
+		fmt.Println("| [2] Tambah layanan berlangganan                     |")
+		fmt.Println("| [3] Ubah layanan berlangganan                       |")
+		fmt.Println("| [4] Hapus layanan berlangganan                      |")
+		fmt.Println("| [5] Cari layanan berlangganan                       |")
+		fmt.Println("| [6] Urutkan layanan berlangganan                    |")
+		fmt.Println("| [7] Total pengeluaran layanan berlangganan          |")
+		fmt.Println("| [8] Rekomendasi                                     |")
+		fmt.Println("| [0] Keluar                                          |")
+		fmt.Println("+-----------------------------------------------------+")
+		tenggatTerdekatLangganan(*d, *n, hariIni)
 
 		fmt.Print(">> ")
 		fmt.Scan(&input)
@@ -128,8 +135,6 @@ func menuLangganan(d *TabLangganan, n *int) {
 		case 0:
 			lanjut = false
 		}
-
-		fmt.Println("---")
 	}
 }
 
@@ -142,11 +147,14 @@ func listLangganan(d TabLangganan, n int) {
 		Mengeluarkan output berupa isi dari array TabLangganan d.
 	*/
 
-	fmt.Println("Daftar layanan berlangganan:")
+	fmt.Println("+-----+----------------------+------------+------------+----------------+")
+	fmt.Println("| No  | Nama                 | Biaya      | Metode     | Tenggat (1-30) |")
+	fmt.Println("+-----+----------------------+------------+-----------+-----------------+")
 
 	var i int
 	for i = 0; i < n; i++ {
-		fmt.Printf("%d. %s %d %s %d\n", i+1, d[i].Nama, d[i].Biaya, d[i].Metode, d[i].Tenggat)
+		fmt.Printf("| %3d | %20s | %10d | %10s | %14d |\n", i+1, d[i].Nama, d[i].Biaya, d[i].Metode, d[i].Tenggat)
+		fmt.Println("+-----+----------------------+------------+-----------+-----------------+")
 	}
 }
 
@@ -485,7 +493,7 @@ func urutLanggananDesc(d *TabLangganan, n int) {
 	}
 }
 
-func tenggatTerdekatLangganan(d TabLangganan, n int) {
+func tenggatTerdekatLangganan(d TabLangganan, n, hariIni int) {
 	/*
 		Initial state:
 		i: tidak terdefinisi.
@@ -497,10 +505,7 @@ func tenggatTerdekatLangganan(d TabLangganan, n int) {
 		Akan mengeluarkan layanan dengan tenggat terdekat dari sekarang.
 	*/
 
-	var i, min, hariIni int
-
-	fmt.Print("Masukkan tanggal hari ini >> ")
-	fmt.Scan(&hariIni)
+	var i, min int
 
 	min = 0
 	for i = 1; i < n; i++ {
@@ -518,7 +523,8 @@ func tenggatTerdekatLangganan(d TabLangganan, n int) {
 		}
 	}
 
-	fmt.Println("Layanan", d[min].Nama, "akan diperbarui pada tanggal", d[min].Tenggat)
+	fmt.Printf("| Layanan %10s akan diperbarui pada tanggal %2d  |\n", d[min].Nama, d[min].Tenggat)
+	fmt.Println("+-----------------------------------------------------+")
 }
 
 func cetakTotalBiayaLangganan(d TabLangganan, n int) {
@@ -567,7 +573,7 @@ func cetakPengeluaranTerbesar(d TabLangganan, n int) {
 	fmt.Println("Pengeluaran terbesar jatuh kepada", d[max].Nama, "dengan biaya", d[max].Biaya)
 }
 
-func menuTransaksi(d *TabTransaksi, n *int) {
+func menuTransaksi(d *TabTransaksi, n *int, bulanIni int) {
 	/*
 		Initial state:
 		input: tidak terdefinisi.
@@ -578,29 +584,26 @@ func menuTransaksi(d *TabTransaksi, n *int) {
 		Akan menampilkan daftar menu dan memanggil fungsi - fungsi dan prosedur sesuai menu yang dipilih.
 	*/
 
-	var input, total, batas int
+	var input, batas int
 	var lanjut bool
 
 	lanjut = true
 
 	for lanjut {
-		total = totalTransaksi(d, *n)
-		fmt.Println("Nominal hingga batas transaksi:", batas-total)
-
-		fmt.Println("  _____                       _       _ ")
-		fmt.Println(" |_   _| _ __ _ _ _  ___ __ _| |__ __(_)")
-		fmt.Println("   | || '_/ _` | ' \\(_-</ _` | / /(_-< |")
-		fmt.Println("   |_||_| \\__,_|_||_/__/\\__,_|_\\_\\/__/_|")
-		fmt.Println("                                        ")
-
-		fmt.Println("[1] Cetak transaksi")
-		fmt.Println("[2] Tambah transaksi")
-		fmt.Println("[3] Ubah transaksi")
-		fmt.Println("[4] Hapus transaksi")
-		fmt.Println("[5] Cari transaksi")
-		fmt.Println("[6] Urutkan transaksi")
-		fmt.Println("[7] Simpan batas transaksi")
-		fmt.Println("[0] Keluar")
+		fmt.Println("+-----------------------------------------------------+")
+		fmt.Println("| Transaksi                                           |")
+		fmt.Println("+-----------------------------------------------------+")
+		fmt.Println("| [1] Cetak transaksi                                 |")
+		fmt.Println("| [2] Tambah transaksi                                |")
+		fmt.Println("| [3] Ubah transaksi                                  |")
+		fmt.Println("| [4] Hapus transaksi                                 |")
+		fmt.Println("| [5] Cari transaksi                                  |")
+		fmt.Println("| [6] Urutkan transaksi                               |")
+		fmt.Println("| [7] Simpan batas transaksi                          |")
+		fmt.Println("| [0] Keluar                                          |")
+		fmt.Println("+-----------------------------------------------------+")
+		fmt.Printf("| Nominal hingga batas transaksi: %19d |\n", batas-totalTransaksi(d, *n, bulanIni))
+		fmt.Println("+-----------------------------------------------------+")
 
 		fmt.Print(">> ")
 		fmt.Scan(&input)
@@ -779,7 +782,8 @@ func hapusTransaksi(d *TabTransaksi, n *int) {
 
 	urutTransaksiNama(d, *n)
 
-	i = cariTransaksi(*d, *n)
+	fmt.Print("indeks transaksi: ")
+	fmt.Scan(&i)
 
 	if i < 0 || i > *n {
 		fmt.Println("Data tidak dapat ditemukan")
@@ -1007,16 +1011,13 @@ func simpanBatasTransaksi(b *int) {
 	fmt.Scan(b)
 }
 
-func totalTransaksi(d *TabTransaksi, n int) int {
-	var i, total, m int
-
-	fmt.Print("Masukkan bulan sekarang [1-12] >> ")
-	fmt.Scan(&m)
+func totalTransaksi(d *TabTransaksi, n, bulanIni int) int {
+	var i, total int
 
 	total = 0
 
 	for i = 0; i < n; i++ {
-		if d[i].Tanggal <= (30*m) && d[i].Tanggal > (30*m-1) {
+		if d[i].Tanggal > (30*(bulanIni-1)) && d[i].Tanggal <= (30*bulanIni) {
 			total += d[i].Biaya
 		}
 	}
